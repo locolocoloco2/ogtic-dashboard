@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGTIC – Comparativa Nóminas 2026 vs 2025</title>
+<!-- Favicon: OGTIC logo inline SVG -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230057A8'/%3E%3Ctext x='32' y='46' font-family='Arial Black,sans-serif' font-size='36' font-weight='900' text-anchor='middle' fill='white'%3EO%3C/text%3E%3Crect x='10' y='52' width='44' height='4' rx='2' fill='%2300a86b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --azul:        #0057A8;
+    --azul-oscuro: #003f7e;
+    --azul-claro:  #1a82e2;
+    --azul-palo:   #e8f2ff;
+    --verde:       #00a86b;
+    --verde-claro: #e6f9f2;
+    --rojo:        #e53e3e;
+    --rojo-claro:  #fff0f0;
+    --amarillo:    #f6ad55;
+    --amarillo-claro: #fff8e1;
+    --gris-fondo:  #f0f4f9;
+    --gris-borde:  #e2e8f0;
+    --blanco:      #ffffff;
+    --texto:       #1a202c;
+    --texto-suave: #718096;
+    --texto-muy-suave: #a0aec0;
+    --sombra:      0 2px 14px rgba(0,87,168,0.09);
+    --sombra-hover:0 8px 28px rgba(0,87,168,0.16);
+    --radius:      14px;
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+    background: var(--gris-fondo);
+    color: var(--texto);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+ 
+  /* ─── HEADER ────────────────────────────────────────────────── */
+  header {
+    background: linear-gradient(135deg, #002a5c 0%, #003f7e 35%, #0057A8 70%, #1a82e2 100%);
+    color: white;
+    padding: 32px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; right: -80px; top: -80px;
+    width: 380px; height: 380px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  header::after {
+    content: '';
+    position: absolute; right: 60px; bottom: -100px;
+    width: 250px; height: 250px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+  .header-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative; z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .header-logo {
+    background: white;
+    border-radius: 12px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .header-logo span.ogtic-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--azul);
+    letter-spacing: -1px;
+  }
+  .header-logo span.dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--verde);
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+  .header-text h1 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+  .header-text p {
+    font-size: 0.88rem;
+    opacity: 0.8;
+    margin-top: 4px;
+    font-weight: 300;
+  }
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 13px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .badge.verde { background: rgba(0,168,107,0.25); border-color: rgba(0,168,107,0.4); }
+  .badge.amarillo { background: rgba(246,173,85,0.25); border-color: rgba(246,173,85,0.4); }
+ 
+  /* ─── LAYOUT ─────────────────────────────────────────────────── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 28px 24px 48px; }
+ 
+  /* ─── SECTION TITLES ─────────────────────────────────────────── */
+  .section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--azul);
+    margin-bottom: 14px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gris-borde);
+  }
+ 
+  /* ─── KPI CARDS ──────────────────────────────────────────────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .kpi {
+    background: var(--blanco);
+    border-radius: var(--radius);
+    padding: 20px 20px 18px;
+    box-shadow: var(--sombra);
+    border-top: 3px solid var(--azul);
+    transition: transform .2s, box-shadow .2s;
+    cursor: default;
+  }
+  .kpi:hover { transform: translateY(-3px); box-shadow: var(--sombra-hover); }
+  .kpi.verde  { border-top-color: var(--verde); }
+  .kpi.rojo   { border-top-color: var(--rojo); }
+  .kpi.amarillo { border-top-color: var(--amarillo); }
+  .kpi.gris   { border-top-color: var(--texto-suave); }
+  .kpi-icon { font-size: 1.2rem; margin-bottom: 8px; opacity: 0.85; }
+  .kpi-label {
+    font-size: 0.68rem;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .kpi-value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--texto);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .kpi-value.azul { color: var(--azul); }
+  .kpi-value.verde { color: var(--verde); }
+  .kpi-value.rojo  { color: var(--rojo); }
+  .kpi-value.amarillo { color: var(--amarillo); }
+  .kpi-sub  { font-size: 0.75rem; color: var(--texto-suave); font-weight: 400; }
+  .kpi-delta { font-size: 0.76rem; font-weight: 700; }
+  .kpi-delta.pos { color: var(--verde); }
+  .kpi-delta.neg { color: var(--rojo); }
+ 
+  /* ─── CARDS ───────────────────────────────────────────────────── */
+  .card {
+    background: var(--blanco);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--sombra);
+  }
+  .card-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 1rem; }
+ 
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .charts-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media(max-width: 900px) {
+    .charts-grid, .charts-grid-3 { grid-template-columns: 1fr; }
+  }
+  canvas { max-height: 290px; }
+ 
+  /* ─── TABLA ───────────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  thead tr { background: var(--azul-oscuro); color: white; }
+  thead th {
+    padding: 10px 13px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  tbody tr { transition: background .12s; }
+  tbody tr:nth-child(even) { background: #f7faff; }
+  tbody tr:hover { background: var(--azul-palo); }
+  tbody td {
+    padding: 9px 13px;
+    border-bottom: 1px solid var(--gris-borde);
+    vertical-align: middle;
+  }
+  .badge-tipo {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--azul-palo);
+    color: var(--azul);
+    white-space: nowrap;
+  }
+  .pos-diff { color: var(--verde); font-weight: 700; }
+  .neg-diff { color: var(--rojo); font-weight: 700; }
+  .total-row { background: var(--azul-oscuro) !important; color: white; font-weight: 700; }
+  .total-row td { border-bottom: none; }
+  .total-row .pos-diff, .total-row .neg-diff { color: white; }
+ 
+  /* ─── TABS ────────────────────────────────────────────────────── */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab {
+    padding: 6px 15px;
+    border-radius: 20px;
+    border: 2px solid var(--gris-borde);
+    background: var(--blanco);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--azul);
+    font-family: 'Poppins', sans-serif;
+    transition: all .15s;
+  }
+  .tab.active { background: var(--azul); color: white; border-color: var(--azul); }
+  .tab:hover:not(.active) { background: var(--azul-palo); }
+ 
+  /* ─── MINI TABLE LIBRAMIENTOS ─────────────────────────────────── */
+  .lib-table { width: 100%; border-collapse: collapse; font-size: 0.77rem; }
+  .lib-table th {
+    background: #f0f4f9;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--texto-suave);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid var(--gris-borde);
+  }
+  .lib-table td { padding: 8px 10px; border-bottom: 1px solid var(--gris-borde); }
+  .lib-table tr:hover td { background: var(--azul-palo); }
+  .lib-num {
+    display: inline-block;
+    background: var(--azul-palo);
+    color: var(--azul);
+    border-radius: 6px;
+    padding: 1px 7px;
+    font-weight: 700;
+    font-size: 0.72rem;
+  }
+  .lib-fecha {
+    color: var(--texto-suave);
+    font-size: 0.72rem;
+  }
+ 
+  /* ─── TENDENCIA 2025 COMPLETA ─────────────────────────────────── */
+  .trend-2025 { margin-bottom: 16px; }
+ 
+  /* ─── ALERTAS / NOTAS ─────────────────────────────────────────── */
+  .nota {
+    background: var(--amarillo-claro);
+    border-left: 4px solid var(--amarillo);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 0.8rem;
+    color: #744210;
+    margin-top: 28px;
+    font-weight: 400;
+  }
+  .nota strong { font-weight: 700; }
+ 
+  /* ─── RESUMEN ANUAL COMPARATIVA ───────────────────────────────── */
+  .resumen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .resumen-mes {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 14px 10px;
+    box-shadow: var(--sombra);
+    text-align: center;
+    border-bottom: 3px solid var(--azul);
+  }
+  .resumen-mes.pos { border-bottom-color: var(--verde); }
+  .resumen-mes.neg { border-bottom-color: var(--rojo); }
+  .resumen-mes-nombre { font-size: 0.72rem; font-weight: 700; color: var(--texto-suave); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .resumen-mes-val26 { font-size: 1.05rem; font-weight: 800; color: var(--azul); }
+  .resumen-mes-val25 { font-size: 0.78rem; color: var(--texto-suave); margin-top: 2px; }
+  .resumen-mes-diff { font-size: 0.78rem; font-weight: 700; margin-top: 4px; }
+ 
+  /* ─── SCROLLBAR ───────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #c4d3e8; border-radius: 3px; }
+
+  /* ─── LOGIN OVERLAY ──────────────────────────────────────────── */
+  #login-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(135deg, #002a5c 0%, #003f7e 40%, #0057A8 75%, #1a82e2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #login-overlay::before {
+    content: '';
+    position: absolute;
+    right: -100px; top: -100px;
+    width: 500px; height: 500px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  #login-overlay::after {
+    content: '';
+    position: absolute;
+    left: -80px; bottom: -120px;
+    width: 350px; height: 350px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+  .login-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 36px 36px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .login-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--azul-palo);
+    border-radius: 12px;
+    padding: 10px 18px;
+    margin-bottom: 24px;
+  }
+  .login-logo .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--verde);
+    display: inline-block;
+  }
+  .login-logo .ogtic-text {
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--azul);
+    letter-spacing: -1px;
+  }
+  .login-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 4px;
+  }
+  .login-subtitle {
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .login-label {
+    display: block;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    margin-bottom: 8px;
+  }
+  .login-input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--gris-borde);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--texto);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .login-input:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(0,87,168,0.12);
+  }
+  .login-input.error {
+    border-color: var(--rojo);
+    box-shadow: 0 0 0 3px rgba(229,62,62,0.1);
+    animation: shake .3s ease;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .login-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+    letter-spacing: .3px;
+  }
+  .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .login-btn:active { transform: translateY(0); }
+  .login-error {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--rojo-claro);
+    border-radius: 8px;
+    color: var(--rojo);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: none;
+  }
+  .login-error.show { display: block; }
+  .login-footer {
+    margin-top: 24px;
+    font-size: 0.72rem;
+    color: var(--texto-muy-suave);
+  }
+  #main-content { display: none; }
+</style>
+</head>
+<body>
+ 
+<!-- ════════════════════════ LOGIN ════════════════════════════ -->
+<div id="login-overlay">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="dot"></span>
+      <span class="ogtic-text">OGTIC</span>
+    </div>
+    <div class="login-title">Acceso Restringido</div>
+    <div class="login-subtitle">Ingrese su cédula para acceder al<br>Comparativo de Nóminas 2026 vs 2025</div>
+    <label class="login-label" for="cedula-input">🪪 Número de Cédula</label>
+    <input
+      id="cedula-input"
+      class="login-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="00000000000"
+      maxlength="11"
+      autocomplete="off"
+    />
+    <button class="login-btn" onclick="verificarCedula()">Entrar →</button>
+    <div class="login-error" id="login-error">❌ Cédula no autorizada. Intente nuevamente.</div>
+    <div class="login-footer">Dirección de Recursos Humanos · OGTIC</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ CONTENIDO PRINCIPAL ════════════════ -->
+<div id="main-content">
+
+<!-- ════════════════════════ HEADER ════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <span class="dot"></span>
+      <span class="ogtic-text">OGTIC</span>
+    </div>
+    <div class="header-text">
+      <h1>Comparativa de Nóminas — Enero a Mayo 2026 vs 2025</h1>
+      <p>Oficina Gubernamental de Tecnologías de la Información y Comunicación · Dirección de Recursos Humanos</p>
+      <div class="header-badges">
+        <span class="badge">📅 Corte: Mayo 2026</span>
+        <span class="badge verde">✅ 5 meses ejecutados</span>
+        <span class="badge amarillo">⚠️ Solo libramientos aprobados · No incluye derechos adquiridos</span>
+      </div>
+    </div>
+  </div>
+</header>
+ 
+<!-- ════════════════════════ BODY ══════════════════════════════ -->
+<div class="container">
+ 
+  <!-- KPIs principales -->
+  <div class="section-title">📌 Indicadores Clave — Ene–May 2026</div>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Total Ejecutado 2026</div>
+      <div class="kpi-value azul">RD$221.6M</div>
+      <div class="kpi-sub">Enero – Mayo 2026</div>
+    </div>
+    <div class="kpi verde">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-label">Crecimiento vs 2025</div>
+      <div class="kpi-value verde">+RD$13.1M</div>
+      <div class="kpi-delta pos">↑ +6.3% acumulado (Ene–May)</div>
+    </div>
+    <div class="kpi amarillo">
+      <div class="kpi-icon">🏆</div>
+      <div class="kpi-label">Mayor Incremento Mensual</div>
+      <div class="kpi-value" style="color:var(--amarillo);font-size:1.3rem;">Abril 2026</div>
+      <div class="kpi-delta pos">+RD$5.1M vs Abr 2025 (+12.8%)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Empleados Mayo 2026</div>
+      <div class="kpi-value azul">711</div>
+      <div class="kpi-sub">vs 672 en Ene · +5.8% en el período</div>
+    </div>
+    <div class="kpi gris">
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-label">Promedio Mensual 2026</div>
+      <div class="kpi-value" style="color:var(--texto);">RD$44.3M</div>
+      <div class="kpi-sub">vs RD$41.7M en 2025 · Δ +6.3%</div>
+    </div>
+    <div class="kpi verde">
+      <div class="kpi-icon">🔐</div>
+      <div class="kpi-label">Vigilancia (May 2026)</div>
+      <div class="kpi-value verde" style="font-size:1.3rem;">RD$2.6M</div>
+      <div class="kpi-sub">109 agentes · vs 85 en Ene (+28.2%)</div>
+    </div>
+  </div>
+ 
+  <!-- Resumen mes a mes -->
+  <div class="section-title">📅 Resumen Mensual — 2026 vs 2025</div>
+  <div class="resumen-grid">
+    <!-- Enero -->
+    <div class="resumen-mes pos">
+      <div class="resumen-mes-nombre">Enero</div>
+      <div class="resumen-mes-val26">RD$44.1M</div>
+      <div class="resumen-mes-val25">2025: RD$43.7M</div>
+      <div class="resumen-mes-diff pos-diff">▲ +RD$391,949 (+0.9%)</div>
+    </div>
+    <!-- Febrero -->
+    <div class="resumen-mes pos">
+      <div class="resumen-mes-nombre">Febrero</div>
+      <div class="resumen-mes-val26">RD$43.9M</div>
+      <div class="resumen-mes-val25">2025: RD$42.2M</div>
+      <div class="resumen-mes-diff pos-diff">▲ +RD$1.65M (+3.9%)</div>
+    </div>
+    <!-- Marzo -->
+    <div class="resumen-mes pos">
+      <div class="resumen-mes-nombre">Marzo</div>
+      <div class="resumen-mes-val26">RD$43.0M</div>
+      <div class="resumen-mes-val25">2025: RD$40.8M</div>
+      <div class="resumen-mes-diff pos-diff">▲ +RD$2.22M (+5.4%)</div>
+    </div>
+    <!-- Abril -->
+    <div class="resumen-mes pos">
+      <div class="resumen-mes-nombre">Abril</div>
+      <div class="resumen-mes-val26">RD$45.1M</div>
+      <div class="resumen-mes-val25">2025: RD$39.9M</div>
+      <div class="resumen-mes-diff pos-diff">▲ +RD$5.13M (+12.8%)</div>
+    </div>
+    <!-- Mayo -->
+    <div class="resumen-mes pos">
+      <div class="resumen-mes-nombre">Mayo</div>
+      <div class="resumen-mes-val26">RD$45.5M</div>
+      <div class="resumen-mes-val25">2025: RD$41.8M</div>
+      <div class="resumen-mes-diff pos-diff">▲ +RD$3.75M (+9.0%)</div>
+    </div>
+  </div>
+ 
+  <!-- Gráfica línea principal -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title"><span class="icon">📈</span> Evolución Mensual del Total de Nómina — 2026 vs 2025</div>
+    <canvas id="lineChart"></canvas>
+  </div>
+ 
+  <!-- Diferencias + Empleados -->
+  <div class="charts-grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">⚡</span> Diferencia Mensual 2026 vs 2025 (RD$)</div>
+      <canvas id="diffChart"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">👥</span> Cantidad de Empleados por Mes — 2026</div>
+      <canvas id="empChart"></canvas>
+    </div>
+  </div>
+ 
+  <!-- Composición + Variación -->
+  <div class="charts-grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">🏷️</span> Composición Nómina — Mayo 2026</div>
+      <canvas id="pieChart"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> Variación % por Tipo de Nómina — Acumulado Ene–May</div>
+      <canvas id="varChart"></canvas>
+    </div>
+  </div>
+ 
+  <!-- ─── TABLA DETALLE COMPARATIVA ─── -->
+  <div class="section-title">🔍 Detalle Comparativo por Tipo de Nómina</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title"><span class="icon">📋</span> Mes a mes — selecciona el período</div>
+    <div class="tabs" id="mesTab">
+      <button class="tab active" data-mes="0">Enero</button>
+      <button class="tab" data-mes="1">Febrero</button>
+      <button class="tab" data-mes="2">Marzo</button>
+      <button class="tab" data-mes="3">Abril</button>
+      <button class="tab" data-mes="4">Mayo</button>
+    </div>
+    <div class="table-wrap">
+      <table id="detailTable">
+        <thead>
+          <tr>
+            <th>Tipo de Nómina</th>
+            <th>2025 (RD$)</th>
+            <th>2026 (RD$)</th>
+            <th>Diferencia</th>
+            <th>Var %</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+ 
+  <!-- ─── TABLA LIBRAMIENTOS 2026 ─── -->
+  <div class="section-title">📄 Libramientos Individuales — 2026</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title"><span class="icon">📑</span> Registro de Libramientos Aprobados — Enero a Mayo 2026</div>
+    <div class="tabs" id="libTab">
+      <button class="tab active" data-mes="1">Enero</button>
+      <button class="tab" data-mes="2">Febrero</button>
+      <button class="tab" data-mes="3">Marzo</button>
+      <button class="tab" data-mes="4">Abril</button>
+      <button class="tab" data-mes="5">Mayo</button>
+    </div>
+    <div class="table-wrap">
+      <table class="lib-table" id="libTable">
+        <thead>
+          <tr>
+            <th>#Lib</th>
+            <th>Concepto</th>
+            <th>Tipo</th>
+            <th>Monto (RD$)</th>
+            <th>Beneficiarios</th>
+            <th>Fecha Pago</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+ 
+  <!-- ─── TENDENCIA 2025 COMPLETA ─── -->
+  <div class="section-title">📉 Tendencia Anual 2025 — Todos los Meses</div>
+  <div class="card trend-2025">
+    <div class="card-title"><span class="icon">📅</span> Comportamiento Mensual Nómina 2025 (Enero – Diciembre)</div>
+    <canvas id="trend2025Chart" style="max-height:240px;"></canvas>
+  </div>
+ 
+  <!-- Nota -->
+  <div class="nota">
+    ⚠️ <strong>Nota:</strong> Los datos están basados en los libramientos de sueldos y compensaciones ejecutados durante el período Enero–Mayo 2026. No contempla ejecuciones de derechos adquiridos ni incentivos. Los totales de 2025 en la comparativa corresponden solo a Enero–Mayo para equiparación del período. La tendencia anual 2025 muestra todos los meses disponibles incluyendo retroactivos asignados al período correspondiente.
+  </div>
+ 
+</div><!-- /container -->
+</div><!-- /main-content -->
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   DATOS — extraídos directamente del Excel OGTIC
+   ══════════════════════════════════════════════════════════════ */
+const meses = ['Enero','Febrero','Marzo','Abril','Mayo'];
+ 
+// Totales mensuales (de la hoja "2026 vs 2025")
+const total2026 = [44104970.5, 43883527.93, 43016552.47, 45053057.39, 45528383.21];
+const total2025 = [43713021.49, 42230393.54, 40797908.36, 39927451.72, 41783026.55];
+const diferencias = total2026.map((v,i) => v - total2025[i]);
+ 
+// Empleados por mes 2026 (de RESUMEN 2026)
+const empleados2026 = [672, 671, 670, 705, 711];
+ 
+// TODOS los tipos de nómina (incluyendo los que el Excel tiene en "2026 vs 2025")
+const tiposData = {
+  tipos: [
+    'Sueldos Empleados Fijos',
+    'Empleados Temporales',
+    'Empleados Temporales (BC)',
+    'Personal Carácter Eventual',
+    'Interinato',
+    'Comp. Servicios de Seguridad',
+    'Compensaciones Especiales',
+    'Período Probatorio Ingreso Carrera',
+    'Personal en Trámite de Pensiones',
+  ],
+  data2026: [
+    [13595049.82, 13650469.51, 13846547.51, 14005638.37, 13730281.31],
+    [26405094.64, 26026250.80, 25111508.72, 26156282.28, 26806543.42],
+    [766360.08,   766502.52,   766502.52,   766502.52,   766502.52],
+    [581490.62,   639007.66,   501196.28,   864493.04,   1014435.04],
+    [476975.34,   465797.44,   465797.44,   385141.18,   350620.92],
+    [2025000,     2080500,     2070000,     2620000,     2605000],
+    [255000,      255000,      255000,      255000,      255000],
+    [0,           0,           0,           0,           0],           // No existe en 2026
+    [0,           0,           0,           0,           0],           // No existe en 2026
+  ],
+  data2025: [
+    [13508600.92, 12731427.51, 12144418.34, 12086089.14, 12928117.02],
+    [26162845.14, 25432390.60, 24729875.50, 23452657.56, 24055822.80],
+    [1261329.10,  1261329.10,  1261329.10,  1261786.16,  1261786.16],
+    [51903,       51903,       0,           0,            513057.51],
+    [696139.33,   696139.33,   634081.42,   709175.82,   666500.02],
+    [1528000,     1553000,     1524000,     1737000,      1677000],
+    [435000,      435000,      435000,      405000,       405000],
+    [69204,       69204,       69204,       69204,        69204],
+    [0,           0,           0,           206539.04,    206539.04],
+  ]
+};
+ 
+// Tendencia 2025 completa (de DETALLES 2025)
+const meses2025All = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const total2025All = [
+  43713021.49, 42230393.54, 40797908.36, 39927451.72, 41783026.55,
+  43469189.49, 44647427.69, 44255960.30, 43910616.56, 43901173.74,
+  44065605.80, 43968897.34
+];
+ 
+// Libramientos 2026 (de DETALLES 2026)
+const libramientos = [
+  // Enero (mes=1)
+  {mes:1, lib:129, concepto:'Nómina Personal Fijo', tipo:'Sueldos Fijos', monto:13595049.82, benef:292, fecha:'22/01/2026'},
+  {mes:1, lib:124, concepto:'Nómina Personal Temporal', tipo:'Temporales', monto:26405094.64, benef:280, fecha:'22/01/2026'},
+  {mes:1, lib:126, concepto:'Nómina Personal Temporal (BC)', tipo:'Temporales BC', monto:766360.08, benef:9, fecha:'22/01/2026'},
+  {mes:1, lib:131, concepto:'Nómina Personal Carácter Eventual', tipo:'Eventual', monto:581490.62, benef:6, fecha:'22/01/2026'},
+  {mes:1, lib:140, concepto:'Nómina Interinato', tipo:'Interinato', monto:476975.34, benef:null, fecha:'27/01/2026'},
+  {mes:1, lib:122, concepto:'Nómina Personal de Vigilancia', tipo:'Vigilancia', monto:2025000, benef:85, fecha:'22/01/2026'},
+  {mes:1, lib:138, concepto:'Compensación BC', tipo:'Comp. Especiales', monto:255000, benef:null, fecha:'27/01/2026'},
+  // Febrero (mes=2)
+  {mes:2, lib:330, concepto:'Nómina Personal Fijo', tipo:'Sueldos Fijos', monto:13650469.51, benef:293, fecha:'20/02/2026'},
+  {mes:2, lib:339, concepto:'Nómina Personal Temporal', tipo:'Temporales', monto:26026250.80, benef:278, fecha:'20/02/2026'},
+  {mes:2, lib:332, concepto:'Nómina Personal Temporal BC', tipo:'Temporales BC', monto:766502.52, benef:9, fecha:'20/02/2026'},
+  {mes:2, lib:328, concepto:'Nómina Carácter Eventual', tipo:'Eventual', monto:639007.66, benef:6, fecha:'25/02/2026'},
+  {mes:2, lib:353, concepto:'Nómina Interinato', tipo:'Interinato', monto:465797.44, benef:null, fecha:'23/02/2026'},
+  {mes:2, lib:345, concepto:'Nómina Personal de Vigilancia', tipo:'Vigilancia', monto:2080500, benef:85, fecha:'23/02/2026'},
+  {mes:2, lib:355, concepto:'Compensación BC', tipo:'Comp. Especiales', monto:255000, benef:null, fecha:'23/02/2026'},
+  // Marzo (mes=3)
+  {mes:3, lib:559, concepto:'Nómina Personal Fijo', tipo:'Sueldos Fijos', monto:13846547.51, benef:300, fecha:'19/03/2026'},
+  {mes:3, lib:587, concepto:'Nómina Personal Temporal', tipo:'Temporales', monto:25111508.72, benef:272, fecha:'19/03/2026'},
+  {mes:3, lib:557, concepto:'Nómina Personal Temporal BC', tipo:'Temporales BC', monto:766502.52, benef:9, fecha:'19/03/2026'},
+  {mes:3, lib:561, concepto:'Nómina Carácter Eventual', tipo:'Eventual', monto:501196.28, benef:5, fecha:'19/03/2026'},
+  {mes:3, lib:601, concepto:'Nómina Interinato', tipo:'Interinato', monto:465797.44, benef:null, fecha:'23/03/2026'},
+  {mes:3, lib:584, concepto:'Nómina Personal de Vigilancia', tipo:'Vigilancia', monto:2070000, benef:84, fecha:'19/03/2026'},
+  {mes:3, lib:602, concepto:'Compensación BC', tipo:'Comp. Especiales', monto:255000, benef:null, fecha:'23/03/2026'},
+  // Abril (mes=4)
+  {mes:4, lib:831, concepto:'Nómina Personal Fijo', tipo:'Sueldos Fijos', monto:14005638.37, benef:298, fecha:'23/04/2026'},
+  {mes:4, lib:850, concepto:'Nómina Personal Temporal', tipo:'Temporales', monto:25949097.02, benef:281, fecha:'23/04/2026'},
+  {mes:4, lib:829, concepto:'Nómina Personal Temporal BC', tipo:'Temporales BC', monto:766502.52, benef:9, fecha:'23/04/2026'},
+  {mes:4, lib:860, concepto:'Diferencia Salarial Personal Temporal', tipo:'Temporales', monto:57670, benef:null, fecha:'27/04/2026'},
+  {mes:4, lib:1195, concepto:'Nómina Adicional Personal Temporal (Abr)', tipo:'Temporales', monto:149515.26, benef:1, fecha:'02/06/2026'},
+  {mes:4, lib:833, concepto:'Nómina Carácter Eventual', tipo:'Eventual', monto:864493.04, benef:9, fecha:'23/04/2026'},
+  {mes:4, lib:864, concepto:'Nómina Interinato', tipo:'Interinato', monto:385141.18, benef:null, fecha:'27/04/2026'},
+  {mes:4, lib:835, concepto:'Nómina Personal de Vigilancia', tipo:'Vigilancia', monto:2620000, benef:107, fecha:'23/04/2026'},
+  {mes:4, lib:862, concepto:'Compensación BC', tipo:'Comp. Especiales', monto:255000, benef:null, fecha:'27/04/2026'},
+  // Mayo (mes=5)
+  {mes:5, lib:1127, concepto:'Nómina Personal Fijo', tipo:'Sueldos Fijos', monto:13592185.05, benef:295, fecha:'25/05/2026'},
+  {mes:5, lib:1201, concepto:'Nómina Adicional Personal Fijo', tipo:'Sueldos Fijos', monto:138096.26, benef:1, fecha:'02/06/2026'},
+  {mes:5, lib:1129, concepto:'Nómina Personal Temporal', tipo:'Temporales', monto:26806543.42, benef:286, fecha:'25/05/2026'},
+  {mes:5, lib:1125, concepto:'Nómina Personal Temporal BC', tipo:'Temporales BC', monto:766502.52, benef:9, fecha:'25/05/2026'},
+  {mes:5, lib:1123, concepto:'Nómina Carácter Eventual', tipo:'Eventual', monto:1014435.04, benef:11, fecha:'25/05/2026'},
+  {mes:5, lib:1156, concepto:'Nómina Interinato', tipo:'Interinato', monto:350620.92, benef:null, fecha:'28/05/2026'},
+  {mes:5, lib:1135, concepto:'Nómina Personal de Vigilancia', tipo:'Vigilancia', monto:2605000, benef:109, fecha:'25/05/2026'},
+  {mes:5, lib:1154, concepto:'Compensación BC', tipo:'Comp. Especiales', monto:255000, benef:null, fecha:'28/05/2026'},
+];
+ 
+/* ══════════════════════════════════════════════════════════════
+   HELPERS
+   ══════════════════════════════════════════════════════════════ */
+function fmt(n) {
+  if (!n || n === 0) return '—';
+  return 'RD$ ' + n.toLocaleString('es-DO', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+}
+function fmtM(n) {
+  return 'RD$' + (n/1e6).toFixed(2) + 'M';
+}
+ 
+const COLORS = ['#0057A8','#1a82e2','#48b9f7','#00a86b','#f6ad55','#e53e3e','#9b59b6','#718096','#2c7a7b'];
+ 
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICA LÍNEA — Evolución mensual
+   ══════════════════════════════════════════════════════════════ */
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels: meses,
+    datasets: [
+      {
+        label: '2026',
+        data: total2026.map(v => v/1e6),
+        borderColor: '#0057A8', backgroundColor: 'rgba(0,87,168,0.07)',
+        borderWidth: 3, pointRadius: 6, pointBackgroundColor: '#0057A8',
+        tension: 0.35, fill: true
+      },
+      {
+        label: '2025',
+        data: total2025.map(v => v/1e6),
+        borderColor: '#f6ad55', backgroundColor: 'rgba(246,173,85,0.06)',
+        borderWidth: 2, pointRadius: 5, pointBackgroundColor: '#f6ad55',
+        tension: 0.35, fill: true, borderDash: [6,3]
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'top', labels: { font: { family: 'Poppins', size: 12 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: RD$ ${ctx.parsed.y.toFixed(3)}M`
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: { callback: v => 'RD$'+v+'M', font: { family: 'Poppins' } },
+        grid: { color: '#eef2f8' }
+      },
+      x: { ticks: { font: { family: 'Poppins' } } }
+    }
+  }
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICA DIFERENCIAS
+   ══════════════════════════════════════════════════════════════ */
+new Chart(document.getElementById('diffChart'), {
+  type: 'bar',
+  data: {
+    labels: meses,
+    datasets: [{
+      label: 'Diferencia RD$',
+      data: diferencias.map(v => v/1e6),
+      backgroundColor: diferencias.map(v => v>=0 ? 'rgba(0,168,107,0.8)' : 'rgba(229,62,62,0.8)'),
+      borderRadius: 8, borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y >= 0 ? '+' : ''}RD$ ${ctx.parsed.y.toFixed(3)}M` } }
+    },
+    scales: {
+      y: { ticks: { callback: v => 'RD$'+v+'M', font: { family: 'Poppins' } }, grid: { color: '#eef2f8' } },
+      x: { ticks: { font: { family: 'Poppins' } } }
+    }
+  }
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICA EMPLEADOS
+   ══════════════════════════════════════════════════════════════ */
+new Chart(document.getElementById('empChart'), {
+  type: 'bar',
+  data: {
+    labels: meses,
+    datasets: [{
+      label: 'Total Empleados 2026',
+      data: empleados2026,
+      backgroundColor: empleados2026.map((v,i) => i===4 ? 'rgba(0,87,168,0.9)' : 'rgba(0,87,168,0.55)'),
+      borderRadius: 8, borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y} empleados` } }
+    },
+    scales: {
+      y: { min: 650, ticks: { stepSize: 10, font: { family: 'Poppins' } }, grid: { color: '#eef2f8' } },
+      x: { ticks: { font: { family: 'Poppins' } } }
+    }
+  }
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICA PIE — Composición Mayo 2026
+   ══════════════════════════════════════════════════════════════ */
+const mayoData = tiposData.data2026.map(arr => arr[4]).filter(v => v > 0);
+const mayoLabels = tiposData.tipos.filter((_, i) => tiposData.data2026[i][4] > 0);
+new Chart(document.getElementById('pieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: mayoLabels,
+    datasets: [{
+      data: mayoData,
+      backgroundColor: COLORS,
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { font: { family: 'Poppins', size: 10 }, boxWidth: 14, padding: 8 }
+      },
+      tooltip: { callbacks: { label: ctx => ` RD$ ${(ctx.parsed/1e6).toFixed(3)}M` } }
+    }
+  }
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICA VARIACIÓN % — Acumulado Ene–May
+   ══════════════════════════════════════════════════════════════ */
+const varData = tiposData.tipos.map((_, i) => {
+  const tot26 = tiposData.data2026[i].reduce((a,b) => a+b, 0);
+  const tot25 = tiposData.data2025[i].reduce((a,b) => a+b, 0);
+  if (tot25 === 0) return null;
+  return +((tot26 - tot25) / tot25 * 100).toFixed(1);
+}).filter(v => v !== null);
+const varLabels = tiposData.tipos.filter((_, i) => {
+  const tot25 = tiposData.data2025[i].reduce((a,b) => a+b, 0);
+  return tot25 > 0;
+});
+ 
+new Chart(document.getElementById('varChart'), {
+  type: 'bar',
+  data: {
+    labels: varLabels,
+    datasets: [{
+      label: 'Var % acumulada',
+      data: varData,
+      backgroundColor: varData.map(v => v >= 0 ? 'rgba(0,168,107,0.75)' : 'rgba(229,62,62,0.75)'),
+      borderRadius: 6, borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.x >= 0 ? '+' : ''}${ctx.parsed.x}%` } }
+    },
+    scales: {
+      x: { ticks: { callback: v => v+'%', font: { family: 'Poppins', size: 10 } }, grid: { color: '#eef2f8' } },
+      y: { ticks: { font: { family: 'Poppins', size: 9 } } }
+    }
+  }
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICA TENDENCIA 2025 COMPLETA
+   ══════════════════════════════════════════════════════════════ */
+new Chart(document.getElementById('trend2025Chart'), {
+  type: 'line',
+  data: {
+    labels: meses2025All,
+    datasets: [{
+      label: 'Total Nómina 2025',
+      data: total2025All.map(v => v/1e6),
+      borderColor: '#f6ad55', backgroundColor: 'rgba(246,173,85,0.1)',
+      borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#f6ad55',
+      tension: 0.3, fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` RD$ ${ctx.parsed.y.toFixed(3)}M` } }
+    },
+    scales: {
+      y: {
+        ticks: { callback: v => 'RD$'+v+'M', font: { family: 'Poppins', size: 10 } },
+        grid: { color: '#eef2f8' }
+      },
+      x: { ticks: { font: { family: 'Poppins', size: 10 } } }
+    }
+  }
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   TABLA DETALLE COMPARATIVA — interactiva por mes
+   ══════════════════════════════════════════════════════════════ */
+function renderDetailTable(mesIdx) {
+  const tbody = document.querySelector('#detailTable tbody');
+  let rows = '';
+  let tot26 = 0, tot25 = 0;
+ 
+  tiposData.tipos.forEach((tipo, i) => {
+    const v26 = tiposData.data2026[i][mesIdx];
+    const v25 = tiposData.data2025[i][mesIdx];
+    if (v26 === 0 && v25 === 0) return;
+ 
+    const diff = v26 - v25;
+    const pct = v25 > 0 ? ((diff/v25)*100).toFixed(1) : (v26 > 0 ? '—' : '0.0');
+    tot26 += v26;
+    tot25 += v25;
+ 
+    const cls = diff >= 0 ? 'pos-diff' : 'neg-diff';
+    const arrow = diff >= 0 ? '▲' : '▼';
+    rows += `<tr>
+      <td><span class="badge-tipo">${tipo}</span></td>
+      <td>${fmt(v25)}</td>
+      <td>${fmt(v26)}</td>
+      <td class="${cls}">${arrow} ${fmt(Math.abs(diff))}</td>
+      <td class="${cls}">${pct !== '—' ? pct+'%' : '—'}</td>
+    </tr>`;
+  });
+ 
+  const totDiff = tot26 - tot25;
+  const totPct = tot25 > 0 ? ((totDiff/tot25)*100).toFixed(1) : '0.0';
+  rows += `<tr class="total-row">
+    <td><strong>TOTAL</strong></td>
+    <td>${fmt(tot25)}</td>
+    <td>${fmt(tot26)}</td>
+    <td>${totDiff>=0?'▲':'▼'} ${fmt(Math.abs(totDiff))}</td>
+    <td>${totPct}%</td>
+  </tr>`;
+ 
+  tbody.innerHTML = rows;
+}
+renderDetailTable(0);
+ 
+document.querySelectorAll('#mesTab .tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#mesTab .tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderDetailTable(+btn.dataset.mes);
+  });
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   TABLA LIBRAMIENTOS — interactiva por mes
+   ══════════════════════════════════════════════════════════════ */
+function renderLibTable(mes) {
+  const tbody = document.querySelector('#libTable tbody');
+  const items = libramientos.filter(l => l.mes === mes);
+  let rows = '';
+  let total = 0;
+ 
+  items.forEach(l => {
+    total += l.monto;
+    rows += `<tr>
+      <td><span class="lib-num">${l.lib}</span></td>
+      <td>${l.concepto}</td>
+      <td><span class="badge-tipo">${l.tipo}</span></td>
+      <td><strong>${fmt(l.monto)}</strong></td>
+      <td>${l.benef !== null ? l.benef : '<span style="color:var(--texto-muy-suave)">N/D</span>'}</td>
+      <td class="lib-fecha">${l.fecha}</td>
+    </tr>`;
+  });
+ 
+  rows += `<tr class="total-row">
+    <td colspan="3"><strong>TOTAL ${meses[mes-1].toUpperCase()} 2026</strong></td>
+    <td colspan="3"><strong>${fmt(total)}</strong></td>
+  </tr>`;
+ 
+  tbody.innerHTML = rows;
+}
+renderLibTable(1);
+ 
+document.querySelectorAll('#libTab .tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#libTab .tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderLibTable(+btn.dataset.mes);
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════
+   LOGIN — Verificación de Cédula
+   ══════════════════════════════════════════════════════════════ */
+const HASHES_VALIDOS = [
+  '84b1776b17e79c595a957d7628b7784d3dc722670f02d7f0e5db2bcba6763525',
+  '4e19581393a6130cea19277c818d43b1b7bc1474b0775a7667b9146d90391151',
+  'ac8754e17fe2066f885bcfb16cfc0cbaae8965c075a2cede2fbcd9bd01e8f368'
+];
+const SESSION_DURATION = 20 * 60 * 1000; // 20 minutos en ms
+const SESSION_KEY = 'ogtic_session_exp';
+
+function checkSession() {
+  const exp = sessionStorage.getItem(SESSION_KEY);
+  if (exp && Date.now() < parseInt(exp)) {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    return true;
+  }
+  sessionStorage.removeItem(SESSION_KEY);
+  return false;
+}
+
+function startSession() {
+  const exp = Date.now() + SESSION_DURATION;
+  sessionStorage.setItem(SESSION_KEY, exp.toString());
+}
+
+async function hashCedula(cedula) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(cedula);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verificarCedula() {
+  const input = document.getElementById('cedula-input');
+  const error = document.getElementById('login-error');
+  const cedula = input.value.replace(/\D/g, '').trim();
+  const hash = await hashCedula(cedula);
+
+  if (HASHES_VALIDOS.includes(hash)) {
+    startSession();
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    window.dispatchEvent(new Event('resize'));
+  } else {
+    input.classList.remove('error');
+    void input.offsetWidth;
+    input.classList.add('error');
+    error.classList.add('show');
+    input.value = '';
+    input.focus();
+    setTimeout(() => input.classList.remove('error'), 400);
+  }
+}
+
+// Verificar sesión al cargar la página
+checkSession();
+
+// Allow Enter key to submit
+document.getElementById('cedula-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') verificarCedula();
+});
+
+// Auto-format: only allow digits
+document.getElementById('cedula-input').addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '');
+  document.getElementById('login-error').classList.remove('show');
+});
+</script>
+</body>
+</html>
