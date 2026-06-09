@@ -526,7 +526,7 @@
     />
     <button class="login-btn" onclick="verificarCedula()">Entrar →</button>
     <div class="login-error" id="login-error">❌ Cédula no autorizada. Intente nuevamente.</div>
-    <div class="login-footer">División de Recursos Humanos · OGTIC</div>
+    <div class="login-footer">Dirección de Recursos Humanos · OGTIC</div>
   </div>
 </div>
 
@@ -542,7 +542,7 @@
     </div>
     <div class="header-text">
       <h1>Comparativa de Nóminas — Enero a Mayo 2026 vs 2025</h1>
-      <p>Oficina Gubernamental de Tecnologías de la Información y Comunicación · División de Recursos Humanos</p>
+      <p>Oficina Gubernamental de Tecnologías de la Información y Comunicación · Dirección de Recursos Humanos</p>
       <div class="header-badges">
         <span class="badge">📅 Corte: Mayo 2026</span>
         <span class="badge verde">✅ 5 meses ejecutados</span>
@@ -1143,21 +1143,33 @@ document.querySelectorAll('#libTab .tab').forEach(btn => {
 /* ══════════════════════════════════════════════════════════════
    LOGIN — Verificación de Cédula
    ══════════════════════════════════════════════════════════════ */
-const CEDULAS_VALIDAS = ['00117130914', '01800072371', '22301255604'];
+const HASHES_VALIDOS = [
+  '84b1776b17e79c595a957d7628b7784d3dc722670f02d7f0e5db2bcba6763525',
+  '4e19581393a6130cea19277c818d43b1b7bc1474b0775a7667b9146d90391151',
+  'ac8754e17fe2066f885bcfb16cfc0cbaae8965c075a2cede2fbcd9bd01e8f368'
+];
 
-function verificarCedula() {
+async function hashCedula(cedula) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(cedula);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verificarCedula() {
   const input = document.getElementById('cedula-input');
   const error = document.getElementById('login-error');
   const cedula = input.value.replace(/\D/g, '').trim();
+  const hash = await hashCedula(cedula);
 
-  if (CEDULAS_VALIDAS.includes(cedula)) {
+  if (HASHES_VALIDOS.includes(hash)) {
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
-    // Re-render charts after content becomes visible
     window.dispatchEvent(new Event('resize'));
   } else {
     input.classList.remove('error');
-    void input.offsetWidth; // trigger reflow for animation
+    void input.offsetWidth;
     input.classList.add('error');
     error.classList.add('show');
     input.value = '';
