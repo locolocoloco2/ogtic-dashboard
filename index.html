@@ -357,7 +357,7 @@
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: #f1f5f9; }
   ::-webkit-scrollbar-thumb { background: #c4d3e8; border-radius: 3px; }
-
+ 
   /* ─── LOGIN OVERLAY ──────────────────────────────────────────── */
   #login-overlay {
     position: fixed;
@@ -529,10 +529,10 @@
     <div class="login-footer">Dirección de Recursos Humanos · OGTIC</div>
   </div>
 </div>
-
+ 
 <!-- ════════════════════════ CONTENIDO PRINCIPAL ════════════════ -->
 <div id="main-content">
-
+ 
 <!-- ════════════════════════ HEADER ════════════════════════════ -->
 <header>
   <div class="header-inner">
@@ -543,6 +543,9 @@
     <div class="header-text">
       <h1>Comparativa de Nóminas — Enero a Mayo 2026 vs 2025</h1>
       <p>Oficina Gubernamental de Tecnologías de la Información y Comunicación · Dirección de Recursos Humanos</p>
+      <div id="greeting-badge" style="display:none; margin-bottom:8px;">
+        <span class="badge" style="background:rgba(0,168,107,0.3); border-color:rgba(0,168,107,0.5); font-size:0.82rem; font-weight:600;">👋 <span id="greeting-text"></span></span>
+      </div>
       <div class="header-badges">
         <span class="badge">📅 Corte: Mayo 2026</span>
         <span class="badge verde">✅ 5 meses ejecutados</span>
@@ -735,7 +738,7 @@
  
 </div><!-- /container -->
 </div><!-- /main-content -->
-
+ 
 <script>
 /* ══════════════════════════════════════════════════════════════
    DATOS — extraídos directamente del Excel OGTIC
@@ -1139,7 +1142,7 @@ document.querySelectorAll('#libTab .tab').forEach(btn => {
     renderLibTable(+btn.dataset.mes);
   });
 });
-
+ 
 /* ══════════════════════════════════════════════════════════════
    LOGIN — Verificación de Cédula
    ══════════════════════════════════════════════════════════════ */
@@ -1148,25 +1151,43 @@ const HASHES_VALIDOS = [
   '4e19581393a6130cea19277c818d43b1b7bc1474b0775a7667b9146d90391151',
   'ac8754e17fe2066f885bcfb16cfc0cbaae8965c075a2cede2fbcd9bd01e8f368'
 ];
-const SESSION_DURATION = 20 * 60 * 1000; // 20 minutos en ms
+const SALUDOS = {
+  '84b1776b17e79c595a957d7628b7784d3dc722670f02d7f0e5db2bcba6763525': 'Saludos Directora Vikianny Muñoz',
+  '4e19581393a6130cea19277c818d43b1b7bc1474b0775a7667b9146d90391151': 'Saludos Director Edgar Batista',
+  'ac8754e17fe2066f885bcfb16cfc0cbaae8965c075a2cede2fbcd9bd01e8f368': 'Saludos Desarrollador'
+};
+const SESSION_DURATION = 20 * 60 * 1000;
 const SESSION_KEY = 'ogtic_session_exp';
-
+const SESSION_GREETING = 'ogtic_session_greeting';
+ 
+function mostrarSaludo(texto) {
+  const badge = document.getElementById('greeting-badge');
+  const span = document.getElementById('greeting-text');
+  if (badge && span && texto) {
+    span.textContent = texto;
+    badge.style.display = 'block';
+  }
+}
+ 
 function checkSession() {
   const exp = sessionStorage.getItem(SESSION_KEY);
   if (exp && Date.now() < parseInt(exp)) {
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
+    mostrarSaludo(sessionStorage.getItem(SESSION_GREETING));
     return true;
   }
   sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_GREETING);
   return false;
 }
-
-function startSession() {
+ 
+function startSession(saludo) {
   const exp = Date.now() + SESSION_DURATION;
   sessionStorage.setItem(SESSION_KEY, exp.toString());
+  sessionStorage.setItem(SESSION_GREETING, saludo);
 }
-
+ 
 async function hashCedula(cedula) {
   const encoder = new TextEncoder();
   const data = encoder.encode(cedula);
@@ -1174,15 +1195,17 @@ async function hashCedula(cedula) {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
-
+ 
 async function verificarCedula() {
   const input = document.getElementById('cedula-input');
   const error = document.getElementById('login-error');
   const cedula = input.value.replace(/\D/g, '').trim();
   const hash = await hashCedula(cedula);
-
+ 
   if (HASHES_VALIDOS.includes(hash)) {
-    startSession();
+    const saludo = SALUDOS[hash];
+    startSession(saludo);
+    mostrarSaludo(saludo);
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
     window.dispatchEvent(new Event('resize'));
@@ -1196,15 +1219,15 @@ async function verificarCedula() {
     setTimeout(() => input.classList.remove('error'), 400);
   }
 }
-
+ 
 // Verificar sesión al cargar la página
 checkSession();
-
+ 
 // Allow Enter key to submit
 document.getElementById('cedula-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') verificarCedula();
 });
-
+ 
 // Auto-format: only allow digits
 document.getElementById('cedula-input').addEventListener('input', function() {
   this.value = this.value.replace(/\D/g, '');
