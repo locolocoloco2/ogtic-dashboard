@@ -1148,6 +1148,24 @@ const HASHES_VALIDOS = [
   '4e19581393a6130cea19277c818d43b1b7bc1474b0775a7667b9146d90391151',
   'ac8754e17fe2066f885bcfb16cfc0cbaae8965c075a2cede2fbcd9bd01e8f368'
 ];
+const SESSION_DURATION = 20 * 60 * 1000; // 20 minutos en ms
+const SESSION_KEY = 'ogtic_session_exp';
+
+function checkSession() {
+  const exp = sessionStorage.getItem(SESSION_KEY);
+  if (exp && Date.now() < parseInt(exp)) {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    return true;
+  }
+  sessionStorage.removeItem(SESSION_KEY);
+  return false;
+}
+
+function startSession() {
+  const exp = Date.now() + SESSION_DURATION;
+  sessionStorage.setItem(SESSION_KEY, exp.toString());
+}
 
 async function hashCedula(cedula) {
   const encoder = new TextEncoder();
@@ -1164,6 +1182,7 @@ async function verificarCedula() {
   const hash = await hashCedula(cedula);
 
   if (HASHES_VALIDOS.includes(hash)) {
+    startSession();
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
     window.dispatchEvent(new Event('resize'));
@@ -1177,6 +1196,9 @@ async function verificarCedula() {
     setTimeout(() => input.classList.remove('error'), 400);
   }
 }
+
+// Verificar sesión al cargar la página
+checkSession();
 
 // Allow Enter key to submit
 document.getElementById('cedula-input').addEventListener('keydown', function(e) {
